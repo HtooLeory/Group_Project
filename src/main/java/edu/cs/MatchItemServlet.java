@@ -21,22 +21,22 @@ public class MatchItemServlet extends HttpServlet {
 
         try (Connection conn = DBUtil.getConnection()) {
 
-            String updateTicket =
+            String updateTicketSql =
                 "UPDATE lost_tickets " +
                 "SET matched_found_item_id = ?, status = 'Matched' " +
                 "WHERE ticket_id = ?";
 
-            PreparedStatement ticketPs = conn.prepareStatement(updateTicket);
+            PreparedStatement ticketPs = conn.prepareStatement(updateTicketSql);
             ticketPs.setString(1, foundItemId);
             ticketPs.setString(2, ticketId);
             ticketPs.executeUpdate();
 
-            String updateFoundItem =
+            String updateFoundSql =
                 "UPDATE found_items " +
                 "SET status = 'Matched' " +
                 "WHERE id = ?";
 
-            PreparedStatement foundPs = conn.prepareStatement(updateFoundItem);
+            PreparedStatement foundPs = conn.prepareStatement(updateFoundSql);
             foundPs.setString(1, foundItemId);
             foundPs.executeUpdate();
 

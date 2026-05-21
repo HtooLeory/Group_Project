@@ -3,22 +3,22 @@ package edu.cs;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 @WebServlet("/AddFoundItemServlet")
 public class AddFoundItemServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
+
+        response.setContentType("text/html");
 
         String itemType = request.getParameter("itemType");
         String description = request.getParameter("description");
@@ -26,11 +26,7 @@ public class AddFoundItemServlet extends HttpServlet {
         String foundDate = request.getParameter("foundDate");
         String status = request.getParameter("status");
 
-        response.setContentType("text/html");
-
-        try {
-
-            Connection conn = DBUtil.getConnection();
+        try (Connection conn = DBUtil.getConnection()) {
 
             String sql =
                 "INSERT INTO found_items " +
@@ -42,24 +38,40 @@ public class AddFoundItemServlet extends HttpServlet {
             ps.setString(1, itemType);
             ps.setString(2, description);
             ps.setString(3, foundLocation);
-            ps.setString(4, foundDate);
-            ps.setString(5, status);
+
+            if (foundDate == null || foundDate.trim().isEmpty()) {
+                ps.setNull(4, Types.DATE);
+            } else {
+                ps.setString(4, foundDate);
+            }
+
+            if (status == null || status.trim().isEmpty()) {
+                ps.setString(5, "Available");
+            } else {
+                ps.setString(5, status);
+            }
 
             ps.executeUpdate();
 
-            conn.close();
-
             response.getWriter().write("<h2>Found item added successfully!</h2>");
-            response.getWriter().write(
-                "<a href='AdminDashboardServlet'>Back to Dashboard</a>"
-            );
+            response.getWriter().write("<p>The item was saved in the database.</p>");
+            response.getWriter().write("<a href='ViewFoundItemsServlet'>View Found Items</a>");
+            response.getWriter().write("<br><br>");
+            response.getWriter().write("<a href='AdminDashboardServlet'>Back to Dashboard</a>");
 
         } catch (Exception e) {
-
-            response.getWriter().write("<h2>Error</h2>");
-            response.getWriter().write("<pre>" + e.getMessage() + "</pre>");
-
+            response.getWriter().write("<h2>Error adding found item</h2>");
+            response.getWriter().write("<pre>" + escapeHtml(e.getMessage()) + "</pre>");
             e.printStackTrace();
         }
+    }
+
+    private String escapeHtml(String text) {
+        if (text == null) return "";
+
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;");
     }
 }

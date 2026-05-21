@@ -36,36 +36,43 @@ public class ViewTicketsServlet extends HttpServlet {
         response.getWriter().write("<h1>Review Lost Item Tickets</h1>");
         response.getWriter().write("<p>These tickets are submitted by students.</p>");
 
+        // Search and filter form
         response.getWriter().write("<form method='get' action='ViewTicketsServlet'>");
+
         response.getWriter().write("<label>Search Ticket</label>");
-        response.getWriter().write("<input type='text' name='search' placeholder='Search by ticket ID, student, item, email, or location' value='" + escapeHtml(search) + "'>");
+        response.getWriter().write(
+            "<input type='text' name='search' " +
+            "placeholder='Search by ticket ID, student, item, email, or location' " +
+            "value='" + escapeHtml(search) + "'>"
+        );
 
         response.getWriter().write("<label>Filter by Status</label>");
         response.getWriter().write("<select name='status'>");
         response.getWriter().write("<option value=''>All</option>");
         response.getWriter().write("<option value='Pending' " + selected(statusFilter, "Pending") + ">Pending</option>");
-        response.getWriter().write("<option value='Approved' " + selected(statusFilter, "Approved") + ">Approved</option>");
-        response.getWriter().write("<option value='Rejected' " + selected(statusFilter, "Rejected") + ">Rejected</option>");
-        response.getWriter().write("<option value='Released' " + selected(statusFilter, "Released") + ">Released</option>");
         response.getWriter().write("<option value='Matched' " + selected(statusFilter, "Matched") + ">Matched</option>");
+        response.getWriter().write("<option value='Released' " + selected(statusFilter, "Released") + ">Released</option>");
+        response.getWriter().write("<option value='Rejected' " + selected(statusFilter, "Rejected") + ">Rejected</option>");
         response.getWriter().write("</select>");
+
         response.getWriter().write("<input type='submit' value='Search / Filter'>");
         response.getWriter().write("</form>");
 
         response.getWriter().write("<br>");
+
+        // Table
         response.getWriter().write("<div class='table-box'>");
         response.getWriter().write("<table>");
 
         response.getWriter().write("<tr>");
         response.getWriter().write("<th>Ticket ID</th>");
+        response.getWriter().write("<th>Details</th>");
         response.getWriter().write("<th>Student</th>");
-        response.getWriter().write("<th>Email</th>");
         response.getWriter().write("<th>Item</th>");
-        response.getWriter().write("<th>Description</th>");
-        response.getWriter().write("<th>Lost Location</th>");
+        response.getWriter().write("<th>Location</th>");
         response.getWriter().write("<th>File</th>");
         response.getWriter().write("<th>Status</th>");
-        response.getWriter().write("<th>Matched Item ID</th>");
+        response.getWriter().write("<th>Matched Found Item ID</th>");
         response.getWriter().write("<th>Find Match</th>");
         response.getWriter().write("<th>Update</th>");
         response.getWriter().write("<th>Delete</th>");
@@ -119,47 +126,83 @@ public class ViewTicketsServlet extends HttpServlet {
 
                 response.getWriter().write("<tr>");
 
+                // Ticket ID
                 response.getWriter().write("<td>" + ticketId + "</td>");
-                response.getWriter().write("<td>" + escapeHtml(rs.getString("student_name")) + "</td>");
-                response.getWriter().write("<td>" + escapeHtml(rs.getString("student_email")) + "</td>");
-                response.getWriter().write("<td>" + escapeHtml(rs.getString("item_type")) + "</td>");
-                response.getWriter().write("<td>" + escapeHtml(rs.getString("description")) + "</td>");
-                response.getWriter().write("<td>" + escapeHtml(rs.getString("lost_location")) + "</td>");
 
+                // Details button/link
+                response.getWriter().write(
+                    "<td><a href='TicketDetailsServlet?ticketId=" + ticketId + "'>View Details</a></td>"
+                );
+
+                // Student name
+                response.getWriter().write(
+                    "<td>" + escapeHtml(rs.getString("student_name")) + "</td>"
+                );
+
+                // Item type
+                response.getWriter().write(
+                    "<td>" + escapeHtml(rs.getString("item_type")) + "</td>"
+                );
+
+                // Lost location
+                response.getWriter().write(
+                    "<td>" + escapeHtml(rs.getString("lost_location")) + "</td>"
+                );
+
+                // Uploaded file
                 if (filePath != null && !filePath.isEmpty()) {
-                    response.getWriter().write("<td><a href='" + escapeHtml(filePath) + "' target='_blank'>View File</a></td>");
+                    response.getWriter().write(
+                        "<td><a href='" + escapeHtml(filePath) + "' target='_blank'>View File</a></td>"
+                    );
                 } else {
                     response.getWriter().write("<td>No file</td>");
                 }
 
-                response.getWriter().write("<td>" + escapeHtml(currentStatus) + "</td>");
+                // Status
+                response.getWriter().write(
+                    "<td>" + escapeHtml(currentStatus) + "</td>"
+                );
 
+                // Matched found item ID
                 if (matchedItemId != null) {
-                    response.getWriter().write("<td><a href='ViewFoundItemsServlet?itemId=" + matchedItemId + "'>" + matchedItemId + "</a></td>");
+                    response.getWriter().write(
+                        "<td><a href='ViewFoundItemsServlet?itemId=" + matchedItemId + "'>" +
+                        matchedItemId +
+                        "</a></td>"
+                    );
                 } else {
                     response.getWriter().write("<td>Not matched</td>");
                 }
 
+                // Find Match
                 response.getWriter().write("<td>");
-                response.getWriter().write("<a href='MatchFoundItemServlet?ticketId=" + ticketId + "'>Find Match</a>");
+                response.getWriter().write(
+                    "<a href='MatchFoundItemServlet?ticketId=" + ticketId + "'>Find Match</a>"
+                );
                 response.getWriter().write("</td>");
 
+                // Update status
                 response.getWriter().write("<td>");
                 response.getWriter().write("<form action='UpdateTicketStatusServlet' method='post'>");
                 response.getWriter().write("<input type='hidden' name='ticketId' value='" + ticketId + "'>");
+
                 response.getWriter().write("<select name='status'>");
                 response.getWriter().write("<option value='Pending' " + selected(currentStatus, "Pending") + ">Pending</option>");
-                response.getWriter().write("<option value='Approved' " + selected(currentStatus, "Approved") + ">Approved</option>");
-                response.getWriter().write("<option value='Rejected' " + selected(currentStatus, "Rejected") + ">Rejected</option>");
-                response.getWriter().write("<option value='Released' " + selected(currentStatus, "Released") + ">Released</option>");
                 response.getWriter().write("<option value='Matched' " + selected(currentStatus, "Matched") + ">Matched</option>");
+                response.getWriter().write("<option value='Released' " + selected(currentStatus, "Released") + ">Released</option>");
+                response.getWriter().write("<option value='Rejected' " + selected(currentStatus, "Rejected") + ">Rejected</option>");
                 response.getWriter().write("</select>");
+
                 response.getWriter().write("<button type='submit'>Update</button>");
                 response.getWriter().write("</form>");
                 response.getWriter().write("</td>");
 
+                // Delete
                 response.getWriter().write("<td>");
-                response.getWriter().write("<form action='DeleteTicketServlet' method='post' onsubmit=\"return confirm('Delete this ticket?');\">");
+                response.getWriter().write(
+                    "<form action='DeleteTicketServlet' method='post' " +
+                    "onsubmit=\"return confirm('Delete this ticket?');\">"
+                );
                 response.getWriter().write("<input type='hidden' name='ticketId' value='" + ticketId + "'>");
                 response.getWriter().write("<button type='submit'>Delete</button>");
                 response.getWriter().write("</form>");
@@ -169,11 +212,13 @@ public class ViewTicketsServlet extends HttpServlet {
             }
 
             if (!hasData) {
-                response.getWriter().write("<tr><td colspan='12'>No tickets found.</td></tr>");
+                response.getWriter().write("<tr><td colspan='11'>No tickets found.</td></tr>");
             }
 
         } catch (Exception e) {
-            response.getWriter().write("<tr><td colspan='12'>Error: " + escapeHtml(e.getMessage()) + "</td></tr>");
+            response.getWriter().write(
+                "<tr><td colspan='11'>Error: " + escapeHtml(e.getMessage()) + "</td></tr>"
+            );
             e.printStackTrace();
         }
 
@@ -197,6 +242,7 @@ public class ViewTicketsServlet extends HttpServlet {
 
     private String escapeHtml(String text) {
         if (text == null) return "";
+
         return text.replace("&", "&amp;")
                    .replace("<", "&lt;")
                    .replace(">", "&gt;")

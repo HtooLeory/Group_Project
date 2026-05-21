@@ -21,13 +21,27 @@ public class UpdateFoundItemStatusServlet extends HttpServlet {
 
         try (Connection conn = DBUtil.getConnection()) {
 
-            String sql = "UPDATE found_items SET status = ? WHERE id = ?";
+            String updateFoundSql =
+                "UPDATE found_items SET status = ? WHERE id = ?";
 
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, status);
-            ps.setString(2, itemId);
+            PreparedStatement foundPs = conn.prepareStatement(updateFoundSql);
+            foundPs.setString(1, status);
+            foundPs.setString(2, itemId);
+            foundPs.executeUpdate();
 
-            ps.executeUpdate();
+            String ticketStatus = status;
+
+            if (status.equals("Available")) {
+                ticketStatus = "Pending";
+            }
+
+            String updateTicketSql =
+                "UPDATE lost_tickets SET status = ? WHERE matched_found_item_id = ?";
+
+            PreparedStatement ticketPs = conn.prepareStatement(updateTicketSql);
+            ticketPs.setString(1, ticketStatus);
+            ticketPs.setString(2, itemId);
+            ticketPs.executeUpdate();
 
             response.sendRedirect("ViewFoundItemsServlet");
 
@@ -35,6 +49,7 @@ public class UpdateFoundItemStatusServlet extends HttpServlet {
             response.setContentType("text/html");
             response.getWriter().write("<h2>Error updating found item status</h2>");
             response.getWriter().write("<pre>" + e.getMessage() + "</pre>");
+            e.printStackTrace();
         }
     }
 }

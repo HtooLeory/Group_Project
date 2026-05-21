@@ -14,7 +14,8 @@ public class ViewFoundItemsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html");
@@ -46,15 +47,18 @@ public class ViewFoundItemsServlet extends HttpServlet {
         response.getWriter().write("<select name='status'>");
         response.getWriter().write("<option value=''>All</option>");
         response.getWriter().write("<option value='Available' " + selected(statusFilter, "Available") + ">Available</option>");
-        response.getWriter().write("<option value='Under Review' " + selected(statusFilter, "Under Review") + ">Under Review</option>");
-        response.getWriter().write("<option value='Released' " + selected(statusFilter, "Released") + ">Released</option>");
         response.getWriter().write("<option value='Matched' " + selected(statusFilter, "Matched") + ">Matched</option>");
+        response.getWriter().write("<option value='Released' " + selected(statusFilter, "Released") + ">Released</option>");
         response.getWriter().write("</select>");
 
         response.getWriter().write("<input type='submit' value='Search / Filter'>");
+
         response.getWriter().write("</form>");
 
-        response.getWriter().write("<br><div class='table-box'><table>");
+        response.getWriter().write("<br>");
+
+        response.getWriter().write("<div class='table-box'>");
+        response.getWriter().write("<table>");
 
         response.getWriter().write("<tr>");
         response.getWriter().write("<th>ID</th>");
@@ -63,7 +67,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
         response.getWriter().write("<th>Found Location</th>");
         response.getWriter().write("<th>Found Date</th>");
         response.getWriter().write("<th>Status</th>");
-        response.getWriter().write("<th>Matched Ticket ID</th>");
+        response.getWriter().write("<th>Matched Lost Ticket ID</th>");
         response.getWriter().write("<th>Update Status</th>");
         response.getWriter().write("<th>Delete</th>");
         response.getWriter().write("</tr>");
@@ -109,6 +113,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
             boolean hasData = false;
 
             while (rs.next()) {
+
                 hasData = true;
 
                 int id = rs.getInt("id");
@@ -116,6 +121,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
                 String matchedTicketId = rs.getString("matched_ticket_id");
 
                 response.getWriter().write("<tr>");
+
                 response.getWriter().write("<td>" + id + "</td>");
                 response.getWriter().write("<td>" + escapeHtml(rs.getString("item_type")) + "</td>");
                 response.getWriter().write("<td>" + escapeHtml(rs.getString("description")) + "</td>");
@@ -134,9 +140,8 @@ public class ViewFoundItemsServlet extends HttpServlet {
                 response.getWriter().write("<input type='hidden' name='itemId' value='" + id + "'>");
                 response.getWriter().write("<select name='status'>");
                 response.getWriter().write("<option value='Available' " + selected(currentStatus, "Available") + ">Available</option>");
-                response.getWriter().write("<option value='Under Review' " + selected(currentStatus, "Under Review") + ">Under Review</option>");
-                response.getWriter().write("<option value='Released' " + selected(currentStatus, "Released") + ">Released</option>");
                 response.getWriter().write("<option value='Matched' " + selected(currentStatus, "Matched") + ">Matched</option>");
+                response.getWriter().write("<option value='Released' " + selected(currentStatus, "Released") + ">Released</option>");
                 response.getWriter().write("</select>");
                 response.getWriter().write("<button type='submit'>Update</button>");
                 response.getWriter().write("</form>");
@@ -161,13 +166,15 @@ public class ViewFoundItemsServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.getWriter().write("</table></div>");
+        response.getWriter().write("</table>");
+        response.getWriter().write("</div>");
 
         response.getWriter().write("<br><a class='back-link' href='ViewTicketsServlet'>Review Lost Item Tickets</a>");
         response.getWriter().write("<br><br><a class='back-link' href='AdminDashboardServlet'>Back to Dashboard</a>");
         response.getWriter().write("<br><br><a class='back-link' href='index.html'>Back to Home</a>");
 
-        response.getWriter().write("</div></body></html>");
+        response.getWriter().write("</div>");
+        response.getWriter().write("</body></html>");
     }
 
     private String selected(String current, String value) {

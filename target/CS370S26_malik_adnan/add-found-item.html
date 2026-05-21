@@ -20,9 +20,20 @@
 
     <form action="AddFoundItemServlet" method="post">
 
-        <label>Item Type</label>
-        <input type="text" name="itemType"
-               placeholder="Example: Bag, Phone, Wallet" required>
+        <label>Item Type / Category</label>
+        <select name="itemType" required>
+            <option value="">-- Select Category --</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Bag">Bag</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Keys">Keys</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Books / Notes">Books / Notes</option>
+            <option value="Jewelry">Jewelry</option>
+            <option value="Water Bottle">Water Bottle</option>
+            <option value="Other">Other</option>
+        </select>
 
         <label>Short Description</label>
         <textarea name="description"
@@ -30,16 +41,47 @@
                   required></textarea>
 
         <label>Found Location</label>
-        <input type="text" name="foundLocation"
-               placeholder="Example: Library, Cafeteria, Student Union">
+        <select name="foundLocation" required>
+            <option value="">-- Select Location --</option>
+
+            <option value="Alumni Hall">Alumni Hall</option>
+            <option value="Campbell Dome">Campbell Dome</option>
+            <option value="Colden Auditorium">Colden Auditorium</option>
+            <option value="Colwin Hall">Colwin Hall</option>
+            <option value="Delany Hall">Delany Hall</option>
+            <option value="Dining Hall">Dining Hall</option>
+            <option value="FitzGerald Gymnasium">FitzGerald Gymnasium</option>
+            <option value="Frese Hall">Frese Hall</option>
+            <option value="G Building">G Building</option>
+            <option value="Gertz Center">Gertz Center</option>
+            <option value="Goldstein Theatre">Goldstein Theatre</option>
+            <option value="Honors Hall">Honors Hall</option>
+            <option value="I Building">I Building</option>
+            <option value="Jefferson Hall">Jefferson Hall</option>
+            <option value="Kiely Hall">Kiely Hall</option>
+            <option value="King Hall">King Hall</option>
+            <option value="Kissena Hall">Kissena Hall</option>
+            <option value="Klapper Hall">Klapper Hall</option>
+            <option value="Music Building (LeFrak Concert Hall)">Music Building (LeFrak Concert Hall)</option>
+            <option value="Powdermaker Hall">Powdermaker Hall</option>
+            <option value="Queens Hall">Queens Hall</option>
+            <option value="Rathaus Hall">Rathaus Hall</option>
+            <option value="Razran Hall">Razran Hall</option>
+            <option value="Remsen Hall">Remsen Hall</option>
+            <option value="Rosenthal Library">Rosenthal Library</option>
+            <option value="Science Building">Science Building</option>
+            <option value="Student Union">Student Union</option>
+            <option value="The Summit">The Summit</option>
+            <option value="Other">Other</option>
+        </select>
 
         <label>Found Date</label>
-        <input type="date" name="foundDate">
+        <input type="date" name="foundDate" id="foundDate" required>
 
         <label>Status</label>
         <select name="status">
             <option value="Available">Available</option>
-            <option value="Under Review">Under Review</option>
+            <option value="Matched">Matched</option>
             <option value="Released">Released</option>
         </select>
 
@@ -60,6 +102,11 @@
     </a>
 
 </div>
+
+<script>
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("foundDate").setAttribute("max", today);
+</script>
 
 </body>
 </html>
