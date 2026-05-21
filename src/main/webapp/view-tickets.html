@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Review Claim Tickets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Review Claim Tickets</h1>
+
+    <p>
+        Public Safety can review student submissions and update ticket status.
+    </p>
+
+    <div class="table-box">
+
+        <table>
+
+            <tr>
+                <th>Ticket ID</th>
+                <th>Student</th>
+                <th>Item</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+
+            <tr>
+                <td>1001</td>
+                <td>Adnan Malik</td>
+                <td>Black Bag</td>
+                <td class="status-pending">Pending</td>
+
+                <td>
+
+                    <form action="UpdateTicketStatusServlet" method="post">
+
+                        <input type="hidden"
+                               name="ticketId"
+                               value="1001">
+
+                        <select name="status">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Approved">
+                                Approved
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="Released">
+                                Released
+                            </option>
+
+                        </select>
+
+                        <button type="submit">
+                            Update
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <br>
+
+    <a class="back-link" href="AdminDashboardServlet">
+        Back to Dashboard
+    </a>
+
+    <br><br>
+
+    <a class="back-link" href="index.html">
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

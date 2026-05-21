@@ -1,1 +1,16 @@
+edu\cs\AddFoundItemServlet.class
+edu\cs\TestDBServlet.class
+edu\cs\UpdateFoundItemStatusServlet.class
+edu\cs\DBUtil.class
+edu\cs\DeleteTicketServlet.class
+edu\cs\UpdateTicketStatusServlet.class
+edu\cs\AdminLoginServlet.class
+edu\cs\MatchFoundItemServlet.class
 edu\cs\FileUploadServlet.class
+edu\cs\MatchItemServlet.class
+edu\cs\AdminDashboardServlet.class
+edu\cs\ViewFilesServlet.class
+edu\cs\ViewFoundItemsServlet.class
+edu\cs\SubmitLostTicketServlet.class
+edu\cs\ViewTicketsServlet.class
+edu\cs\LogoutServlet.class

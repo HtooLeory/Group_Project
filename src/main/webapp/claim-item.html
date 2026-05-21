@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Claim Found Item</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Claim a Found Item</h1>
+    <p>Submit proof so Public Safety can verify that the item belongs to you.</p>
+
+    <form action="ClaimItemServlet" method="post" enctype="multipart/form-data">
+        <label>Found Item ID</label>
+        <input type="number" name="foundItemId" placeholder="Enter ID from found item list" required>
+
+        <label>Full Name</label>
+        <input type="text" name="studentName" required>
+
+        <label>Student ID / EMPLID</label>
+        <input type="text" name="studentId" required>
+
+        <label>QC Email</label>
+        <input type="email" name="studentEmail" required>
+
+        <label>Phone Number</label>
+        <input type="text" name="phone">
+
+        <label>Ownership Details</label>
+        <textarea name="ownershipDetails" placeholder="Explain why this item belongs to you. Include details only the owner would know." required></textarea>
+
+        <label>Upload Proof Image/File</label>
+        <input type="file" name="proofFile" accept=".jpg,.jpeg,.png,.pdf,.txt" required>
+
+        <input type="submit" value="Submit Claim">
+    </form>
+
+    <a class="back-link" href="index.html">Back to Home</a>
+</div>
+
+</body>
+</html>

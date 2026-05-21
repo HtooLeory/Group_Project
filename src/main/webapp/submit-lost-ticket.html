@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Submit Lost Ticket</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Submit Lost Item Ticket</h1>
+
+    <p>Use this form if you lost something on campus.</p>
+
+    <form action="SubmitLostTicketServlet" method="post" enctype="multipart/form-data">
+
+        <label>Full Name</label>
+        <input type="text" name="studentName" required>
+
+        <label>Student ID / EMPLID</label>
+        <input type="text" name="studentId" required>
+
+        <label>QC Email</label>
+        <input type="email" name="studentEmail" required>
+
+        <label>Phone Number</label>
+        <input type="text" name="phone">
+
+        <label>Item Type</label>
+        <input type="text" name="itemType" placeholder="Example: Laptop, Bag, Phone" required>
+
+        <label>Detailed Item Description</label>
+        <textarea name="description"
+                  placeholder="Describe color, brand, size, unique marks, stickers, etc."
+                  required></textarea>
+
+        <label>Where Did You Lose It?</label>
+        <input type="text" name="lostLocation">
+
+        <label>When Did You Lose It?</label>
+        <input type="date" name="lostDate">
+
+        <label>Upload Photo / Supporting File</label>
+        <input type="file" name="proofFile" accept=".jpg,.jpeg,.png,.pdf,.txt">
+
+        <input type="submit" value="Submit Ticket">
+
+    </form>
+
+    <br>
+
+    <a class="back-link" href="index.html">Back to Home</a>
+
+</div>
+
+</body>
+</html>

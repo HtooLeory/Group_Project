@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Found Item</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Add Found Item Notice</h1>
+
+    <p>
+        Public Safety can post a simple notice about an item they received.
+        No image is required here.
+    </p>
+
+    <form action="AddFoundItemServlet" method="post">
+
+        <label>Item Type</label>
+        <input type="text" name="itemType"
+               placeholder="Example: Bag, Phone, Wallet" required>
+
+        <label>Short Description</label>
+        <textarea name="description"
+                  placeholder="Example: We received a lost black bag."
+                  required></textarea>
+
+        <label>Found Location</label>
+        <input type="text" name="foundLocation"
+               placeholder="Example: Library, Cafeteria, Student Union">
+
+        <label>Found Date</label>
+        <input type="date" name="foundDate">
+
+        <label>Status</label>
+        <select name="status">
+            <option value="Available">Available</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Released">Released</option>
+        </select>
+
+        <input type="submit" value="Add Found Item">
+
+    </form>
+
+    <br>
+
+    <a class="back-link" href="AdminDashboardServlet">
+        Back to Dashboard
+    </a>
+
+    <br><br>
+
+    <a class="back-link" href="index.html">
+        Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

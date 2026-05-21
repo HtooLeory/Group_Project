@@ -1,17 +1,90 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <title>File Upload</title>
+    <title>QC Lost and Found Ticket System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h2>Upload File</h2>
 
-    <form action="FileUploadServlet" method="post" enctype="multipart/form-data">
-        Select File to Upload:
-        <input type="file" name="fileName" required>
-        <br><br>
-        <input type="submit" value="Upload">
-    </form>
+<body>
+
+<div class="container">
+
+    <h1>QC Lost and Found Ticket System</h1>
+
+    <p class="subtitle">
+        Submit tickets, claim lost items, and track requests digitally.
+    </p>
+
+    <div class="card-grid">
+
+        <!-- VIEW FOUND ITEMS
+		<div class="card">
+		
+		    <h2>
+		        <a href="ViewFoundItemsServlet">
+		            View Found Items
+		        </a>
+		    </h2>
+		
+		    <p>
+		        See items reported by Public Safety.
+		    </p>
+		
+		</div>
+        -->
+
+        <!-- SUBMIT LOST TICKET -->
+        <div class="card">
+
+            <h2>
+                <a href="submit-lost-ticket.html">
+                    Submit Lost Ticket
+                </a>
+            </h2>
+
+            <p>
+                Report an item you lost on campus.
+            </p>
+
+        </div>
+
+        <!-- CLAIM ITEM
+		<div class="card">
+		
+		    <h2>
+		        <a href="claim-item.html">
+		            Claim an Item
+		        </a>
+		    </h2>
+		
+		    <p>
+		        Submit proof and ownership details
+		        to claim a found item.
+		    </p>
+		
+		</div>
+      -->
+
+        <!-- ADMIN DASHBOARD -->
+        <div class="card admin">
+
+            <h2>
+                <a href="AdminDashboardServlet">
+                    Public Safety Dashboard
+                </a>
+            </h2>
+
+            <p>
+                Authorized Public Safety staff only.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>

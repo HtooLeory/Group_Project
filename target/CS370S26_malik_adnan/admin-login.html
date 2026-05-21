@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Public Safety Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Public Safety Login</h1>
+
+    <p class="subtitle">
+        Only authorized Public Safety staff can access the dashboard.
+    </p>
+
+    <form action="AdminLoginServlet" method="post">
+
+        <label>Username</label>
+        <input type="text" name="username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <input type="submit" value="Login">
+
+    </form>
+
+    <br>
+
+    <a class="back-link" href="index.html">Back to Home</a>
+
+</div>
+
+</body>
+</html>
