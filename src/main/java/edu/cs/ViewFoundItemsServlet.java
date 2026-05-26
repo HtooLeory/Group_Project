@@ -66,6 +66,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
         response.getWriter().write("<th>Description</th>");
         response.getWriter().write("<th>Found Location</th>");
         response.getWriter().write("<th>Found Date</th>");
+        response.getWriter().write("<th>Image</th>");
         response.getWriter().write("<th>Status</th>");
         response.getWriter().write("<th>Matched Lost Ticket ID</th>");
         response.getWriter().write("<th>Update Status</th>");
@@ -119,6 +120,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
                 int id = rs.getInt("id");
                 String currentStatus = rs.getString("status");
                 String matchedTicketId = rs.getString("matched_ticket_id");
+                String imagePath = rs.getString("image_path");
 
                 response.getWriter().write("<tr>");
 
@@ -127,6 +129,15 @@ public class ViewFoundItemsServlet extends HttpServlet {
                 response.getWriter().write("<td>" + escapeHtml(rs.getString("description")) + "</td>");
                 response.getWriter().write("<td>" + escapeHtml(rs.getString("found_location")) + "</td>");
                 response.getWriter().write("<td>" + escapeHtml(rs.getString("found_date")) + "</td>");
+
+                if (imagePath != null && !imagePath.trim().isEmpty()) {
+                    response.getWriter().write("<td>");
+                    response.getWriter().write("<a href='" + escapeHtml(imagePath) + "' target='_blank'>View Image</a>");
+                    response.getWriter().write("</td>");
+                } else {
+                    response.getWriter().write("<td>No image</td>");
+                }
+
                 response.getWriter().write("<td>" + escapeHtml(currentStatus) + "</td>");
 
                 if (matchedTicketId != null) {
@@ -158,11 +169,11 @@ public class ViewFoundItemsServlet extends HttpServlet {
             }
 
             if (!hasData) {
-                response.getWriter().write("<tr><td colspan='9'>No found items found.</td></tr>");
+                response.getWriter().write("<tr><td colspan='10'>No found items found.</td></tr>");
             }
 
         } catch (Exception e) {
-            response.getWriter().write("<tr><td colspan='9'>Error: " + escapeHtml(e.getMessage()) + "</td></tr>");
+            response.getWriter().write("<tr><td colspan='10'>Error: " + escapeHtml(e.getMessage()) + "</td></tr>");
             e.printStackTrace();
         }
 
@@ -186,6 +197,7 @@ public class ViewFoundItemsServlet extends HttpServlet {
 
     private String escapeHtml(String text) {
         if (text == null) return "";
+
         return text.replace("&", "&amp;")
                    .replace("<", "&lt;")
                    .replace(">", "&gt;")

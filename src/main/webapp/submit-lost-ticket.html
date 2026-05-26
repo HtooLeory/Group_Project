@@ -63,7 +63,6 @@
         <label>Where Did You Lose It?</label>
         <select name="lostLocation" required>
             <option value="">-- Select Location --</option>
-
             <option value="Alumni Hall">Alumni Hall</option>
             <option value="Campbell Dome">Campbell Dome</option>
             <option value="Colden Auditorium">Colden Auditorium</option>
@@ -98,7 +97,7 @@
         <label>When Did You Lose It?</label>
         <input type="date" name="lostDate" id="lostDate" required>
 
-        <label>Upload Photo / Supporting File (Maximum upload size: 5 MB)</label>
+        <label>Upload Photo / Supporting File</label>
         <input type="file" name="proofFile" accept=".jpg,.jpeg,.png,.pdf,.txt">
 
         <input type="submit" value="Submit Ticket">
@@ -112,19 +111,20 @@
 </div>
 
 <script>
-    
     document.getElementById("studentId").addEventListener("input", function () {
         this.value = this.value.replace(/[^0-9]/g, "");
     });
 
-    
     document.getElementById("phone").addEventListener("input", function () {
         this.value = this.value.replace(/[^0-9]/g, "");
     });
 
-   
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById("lostDate").setAttribute("max", today);
+    const minDate = "2023-01-01";
+
+    const lostDateInput = document.getElementById("lostDate");
+    lostDateInput.setAttribute("min", minDate);
+    lostDateInput.setAttribute("max", today);
 </script>
 
 </body>

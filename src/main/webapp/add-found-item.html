@@ -14,11 +14,11 @@
     <h1>Add Found Item Notice</h1>
 
     <p>
-        Public Safety can post a simple notice about an item they received.
-        No image is required here.
+        Public Safety can post a notice about an item they received.
+        A photo can be uploaded for internal verification.
     </p>
 
-    <form action="AddFoundItemServlet" method="post">
+    <form action="AddFoundItemServlet" method="post" enctype="multipart/form-data">
 
         <label>Item Type / Category</label>
         <select name="itemType" required>
@@ -43,7 +43,6 @@
         <label>Found Location</label>
         <select name="foundLocation" required>
             <option value="">-- Select Location --</option>
-
             <option value="Alumni Hall">Alumni Hall</option>
             <option value="Campbell Dome">Campbell Dome</option>
             <option value="Colden Auditorium">Colden Auditorium</option>
@@ -78,6 +77,9 @@
         <label>Found Date</label>
         <input type="date" name="foundDate" id="foundDate" required>
 
+        <label>Upload Found Item Photo</label>
+        <input type="file" name="foundImage" accept=".jpg,.jpeg,.png">
+
         <label>Status</label>
         <select name="status">
             <option value="Available">Available</option>
@@ -91,21 +93,21 @@
 
     <br>
 
-    <a class="back-link" href="AdminDashboardServlet">
-        Back to Dashboard
-    </a>
+    <a class="back-link" href="AdminDashboardServlet">Back to Dashboard</a>
 
     <br><br>
 
-    <a class="back-link" href="index.html">
-        Back to Home
-    </a>
+    <a class="back-link" href="index.html">Back to Home</a>
 
 </div>
 
 <script>
     const today = new Date().toISOString().split("T")[0];
-    document.getElementById("foundDate").setAttribute("max", today);
+    const minDate = "2023-01-01";
+
+    const foundDateInput = document.getElementById("foundDate");
+    foundDateInput.setAttribute("min", minDate);
+    foundDateInput.setAttribute("max", today);
 </script>
 
 </body>

@@ -1,18 +1,38 @@
 package edu.cs;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Properties;
 
 public class DBUtil {
 
-    private static final String DB_URL =
-        "jdbc:mysql://qc-lost-found.c8bw88u8aofa.us-east-1.rds.amazonaws.com:3306/qc_lost_found?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-
-    private static final String DB_USER = "admin";
-    private static final String DB_PASSWORD = "Admin123admin";
+    private static final String PROPERTIES_FILE = "db.properties";
 
     public static Connection getConnection() throws Exception {
+
+        Properties props = new Properties();
+
+        try (InputStream input =
+                 DBUtil.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
+
+            if (input == null) {
+                throw new Exception("db.properties file not found in classpath.");
+            }
+
+            props.load(input);
+        }
+
+        String dbUrl = props.getProperty("db.url");
+        String dbUser = props.getProperty("db.user");
+        String dbPassword = props.getProperty("db.password");
+
+        if (dbUrl == null || dbUser == null || dbPassword == null) {
+            throw new Exception("Missing database configuration in db.properties.");
+        }
+
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+        return DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 }

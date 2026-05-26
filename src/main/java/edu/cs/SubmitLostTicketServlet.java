@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 
 @WebServlet("/SubmitLostTicketServlet")
 @MultipartConfig(
@@ -22,9 +21,9 @@ import javax.servlet.http.Part;
 public class SubmitLostTicketServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+
     private static final String UPLOAD_DIR = "lost_ticket_uploads";
 
-    @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,9 +39,31 @@ public class SubmitLostTicketServlet extends HttpServlet {
         String lostLocation = request.getParameter("lostLocation");
         String lostDate = request.getParameter("lostDate");
 
+        if (!isValidDate(lostDate)) {
+            response.getWriter().write("<h2>Invalid Lost Date</h2>");
+            response.getWriter().write("<p>The lost date must be between 2023-01-01 and today.</p>");
+            response.getWriter().write("<a href='submit-lost-ticket.html'>Go Back</a>");
+            return;
+        }
+
+        if (!isNumbersOnly(studentId)) {
+            response.getWriter().write("<h2>Invalid Student ID</h2>");
+            response.getWriter().write("<p>Student ID / EMPLID must contain numbers only.</p>");
+            response.getWriter().write("<a href='submit-lost-ticket.html'>Go Back</a>");
+            return;
+        }
+
+        if (phone != null && !phone.trim().isEmpty() && !isNumbersOnly(phone)) {
+            response.getWriter().write("<h2>Invalid Phone Number</h2>");
+            response.getWriter().write("<p>Phone number must contain numbers only.</p>");
+            response.getWriter().write("<a href='submit-lost-ticket.html'>Go Back</a>");
+            return;
+        }
+
         String proofFilePath = null;
 
         try {
+
             Part filePart = request.getPart("proofFile");
 
             if (filePart != null && filePart.getSize() > 0) {
@@ -66,6 +87,7 @@ public class SubmitLostTicketServlet extends HttpServlet {
                 String uploadPath = applicationPath + File.separator + UPLOAD_DIR;
 
                 File uploadDir = new File(uploadPath);
+
                 if (!uploadDir.exists()) {
                     uploadDir.mkdirs();
                 }
@@ -106,8 +128,38 @@ public class SubmitLostTicketServlet extends HttpServlet {
 
         } catch (Exception e) {
             response.getWriter().write("<h2>Error submitting ticket</h2>");
-            response.getWriter().write("<pre>" + e.getMessage() + "</pre>");
+            response.getWriter().write("<pre>" + escapeHtml(e.getMessage()) + "</pre>");
             e.printStackTrace();
         }
+    }
+
+    private boolean isValidDate(String dateText) {
+        if (dateText == null || dateText.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            LocalDate selectedDate = LocalDate.parse(dateText);
+            LocalDate minDate = LocalDate.of(2023, 1, 1);
+            LocalDate today = LocalDate.now();
+
+            return !selectedDate.isBefore(minDate) && !selectedDate.isAfter(today);
+
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private boolean isNumbersOnly(String text) {
+        return text != null && text.matches("[0-9]+");
+    }
+
+    private String escapeHtml(String text) {
+        if (text == null) return "";
+
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;");
     }
 }
